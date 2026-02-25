@@ -1,0 +1,100 @@
+@model BTCPayServer.Plugins.EthereumPayments.Models.EthereumSettings
+@{
+    ViewData["Title"] = "Ethereum Payment Settings";
+    Layout = "../Shared/_NavLayout.cshtml";
+}
+
+<div class="row">
+    <div class="col-xxl-constrain col-xl-8">
+        <h2 class="mb-4">@ViewData["Title"]</h2>
+
+        <form method="post" asp-action="StoreSettings">
+            <div class="form-group">
+                <label asp-for="RpcUrl" class="form-label"></label>
+                <input asp-for="RpcUrl" class="form-control" />
+                <span asp-validation-for="RpcUrl" class="text-danger"></span>
+                <small class="form-text text-muted">
+                    Ethereum JSON-RPC endpoint URL (e.g., https://public-eth.nownodes.io or your own node)
+                </small>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="ReceivingAddress" class="form-label"></label>
+                <input asp-for="ReceivingAddress" class="form-control" placeholder="0x..." />
+                <span asp-validation-for="ReceivingAddress" class="text-danger"></span>
+                <small class="form-text text-muted">
+                    Your Ethereum address (EOA) for receiving payments. Format: 0x followed by 40 hex characters.
+                </small>
+            </div>
+
+            <h4 class="mt-5 mb-3">ERC-20 Token Contracts</h4>
+
+            <div class="form-group">
+                <label asp-for="UsdtContractAddress" class="form-label">USDT Contract Address</label>
+                <input asp-for="UsdtContractAddress" class="form-control" />
+                <span asp-validation-for="UsdtContractAddress" class="text-danger"></span>
+                <small class="form-text text-muted">
+                    USDT (Tether) ERC-20 contract on Ethereum Mainnet
+                </small>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="DEuroContractAddress" class="form-label">dEURO Contract Address</label>
+                <input asp-for="DEuroContractAddress" class="form-control" />
+                <span asp-validation-for="DEuroContractAddress" class="text-danger"></span>
+                <small class="form-text text-muted">
+                    dEURO ERC-20 contract on Ethereum Mainnet
+                </small>
+            </div>
+
+            <h4 class="mt-5 mb-3">Blockchain Settings</h4>
+
+            <div class="form-group">
+                <label asp-for="ConfirmationCount" class="form-label"></label>
+                <input asp-for="ConfirmationCount" type="number" min="1" max="100" class="form-control" />
+                <span asp-validation-for="ConfirmationCount" class="text-danger"></span>
+                <small class="form-text text-muted">
+                    Number of block confirmations required before considering payment final (recommended: 12-20)
+                </small>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="ScanIntervalSeconds" class="form-label"></label>
+                <input asp-for="ScanIntervalSeconds" type="number" min="5" max="300" class="form-control" />
+                <span asp-validation-for="ScanIntervalSeconds" class="text-danger"></span>
+                <small class="form-text text-muted">
+                    How often to scan for new payments (in seconds, recommended: 15-30)
+                </small>
+            </div>
+
+            <button type="submit" class="btn btn-primary mt-4">Save Settings</button>
+        </form>
+
+        <div class="alert alert-info mt-5">
+            <h5>Payment Methods</h5>
+            <p>This plugin enables three payment methods for your store:</p>
+            <ul>
+                <li><strong>ETH-OnChain:</strong> Native Ethereum payments</li>
+                <li><strong>ETH-USDT-ERC20:</strong> USDT stablecoin payments</li>
+                <li><strong>ETH-dEURO-ERC20:</strong> dEURO euro-pegged token payments (1 dEURO = 1 EUR)</li>
+            </ul>
+            <p class="mb-0">
+                All three payment methods use the same receiving address configured above.
+            </p>
+        </div>
+
+        <div class="alert alert-warning mt-3">
+            <h5>⚠️ MVP Limitations</h5>
+            <ul class="mb-0">
+                <li>Single address per store (HD derivation coming in future version)</li>
+                <li>Manual gas fee management (Paymaster integration planned)</li>
+                <li>No automatic address generation per invoice</li>
+                <li>External RPC dependency (consider running your own node for production)</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+@section PageFootContent {
+    <partial name="_ValidationScriptsPartial" />
+}
