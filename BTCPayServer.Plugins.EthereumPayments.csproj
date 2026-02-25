@@ -15,9 +15,9 @@
   <!-- WICHTIG: KEINE ProjectReference mehr auf ../btcpayserver/... -->
   <ItemGroup>
     <!-- BTCPay Kern-APIs als NuGet (Version ungefähr an deine BTCPay-Server-Version anpassen) -->
-    <PackageReference Include="BTCPayServer.Abstractions" Version="2.1.*" />
-    <PackageReference Include="BTCPayServer.Client" Version="2.1.*" />
-    <PackageReference Include="BTCPayServer" Version="2.1.*" />
+    <PackageReference Include="BTCPayServer.Abstractions" Version="1.13.*" />
+    <PackageReference Include="BTCPayServer.Client" Version="1.13.*" />
+    <PackageReference Include="BTCPayServer" Version="1.13.*" />
   </ItemGroup>
 
   <!-- Ethereum / Nethereum Dependencies -->
