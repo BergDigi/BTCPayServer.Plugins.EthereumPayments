@@ -5,22 +5,22 @@
     <Nullable>enable</Nullable>
     <AddRazorSupportForMvc>true</AddRazorSupportForMvc>
     <GenerateEmbeddedFilesManifest>true</GenerateEmbeddedFilesManifest>
-
-    <!-- Plugin-Metadaten (optional, aber nice) -->
-    <Product>Ethereum Payments</Product>
-    <Description>Accept ETH and ERC-20 tokens (USDT, dEURO) on Ethereum Mainnet.</Description>
-    <Version>1.0.0</Version>
   </PropertyGroup>
 
-  <!-- WICHTIG: KEINE ProjectReference mehr auf ../btcpayserver/... -->
+  <!-- Nur das BTCPay-Abstractions-Paket, Rest kommt aus ASP.NET Core -->
   <ItemGroup>
-    <!-- BTCPay Kern-APIs als NuGet (Version ungefähr an deine BTCPay-Server-Version anpassen) -->
-    <PackageReference Include="BTCPayServer.Abstractions" Version="1.13.*" />
-    <PackageReference Include="BTCPayServer.Client" Version="1.13.*" />
-    <PackageReference Include="BTCPayServer" Version="1.13.*" />
+    <PackageReference Include="BTCPayServer.Abstractions" Version="1.0.0.0" />
   </ItemGroup>
 
-  <!-- Ethereum / Nethereum Dependencies -->
+  <!-- ASP.NET Core / MVC / Logging / EFCore, damit Controller, BackgroundService etc. da sind -->
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.2.5" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="8.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="8.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Abstractions" Version="8.0.0" />
+  </ItemGroup>
+
+  <!-- Nethereum Dependencies -->
   <ItemGroup>
     <PackageReference Include="Nethereum.Web3" Version="4.19.0" />
     <PackageReference Include="Nethereum.Contracts" Version="4.19.0" />
