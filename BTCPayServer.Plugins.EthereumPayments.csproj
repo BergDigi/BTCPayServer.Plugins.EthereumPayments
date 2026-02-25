@@ -1,23 +1,33 @@
 <Project Sdk="Microsoft.NET.Sdk.Razor">
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
     <AddRazorSupportForMvc>true</AddRazorSupportForMvc>
     <GenerateEmbeddedFilesManifest>true</GenerateEmbeddedFilesManifest>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
-  <!-- Nur das BTCPay-Abstractions-Paket, Rest kommt aus ASP.NET Core -->
-  <ItemGroup>
-    <PackageReference Include="BTCPayServer.Abstractions" Version="1.0.0.0" />
-  </ItemGroup>
+  <!-- Plugin-Metadaten (optional) -->
+  <PropertyGroup>
+    <Product>Ethereum Payments</Product>
+    <Description>Accept ETH and ERC-20 tokens (USDT, dEURO) on Ethereum Mainnet.</Description>
+    <Version>1.0.0</Version>
+  </PropertyGroup>
 
-  <!-- ASP.NET Core / MVC / Logging / EFCore, damit Controller, BackgroundService etc. da sind -->
+  <!-- Wie im offiziellen btcpayserver-plugin-template -->
+  <ItemDefinitionGroup>
+    <ProjectReference>
+      <Properties>StaticWebAssetsEnabled=false</Properties>
+      <Private>false</Private>
+      <ExcludeAssets>runtime;native;build;buildTransitive;contentFiles</ExcludeAssets>
+    </ProjectReference>
+  </ItemDefinitionGroup>
+
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.2.5" />
-    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="8.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="8.0.0" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Abstractions" Version="8.0.0" />
+    <!-- Referenz auf das Submodul 'btcpayserver' -->
+    <ProjectReference Include="btcpayserver/BTCPayServer/BTCPayServer.csproj" />
+    <!-- Razor-Views des Plugins einbetten -->
+    <EmbeddedResource Include="Views\**\*.cshtml" />
   </ItemGroup>
 
   <!-- Nethereum Dependencies -->
@@ -27,10 +37,5 @@
     <PackageReference Include="Nethereum.RPC" Version="4.19.0" />
     <PackageReference Include="Nethereum.Util" Version="4.19.0" />
     <PackageReference Include="Nethereum.Hex" Version="4.19.0" />
-  </ItemGroup>
-
-  <!-- Razor Views einbetten -->
-  <ItemGroup>
-    <EmbeddedResource Include="Views\**\*.cshtml" />
   </ItemGroup>
 </Project>
