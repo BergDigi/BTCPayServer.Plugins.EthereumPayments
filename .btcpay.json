@@ -2,7 +2,7 @@
   "identifier": "BTCPayServer.Plugins.EthereumPayments",
   "name": "Ethereum Payments",
   "description": "Accept ETH and ERC-20 tokens (USDT, dEURO) on Ethereum Mainnet.",
-  "source": "https://github.com/BergDigi/BTCPayServer.Plugins.EthereumPayments.git",
+  "source": "https://github.com/BergDigi/BTCPayServer.Plugins.EthereumPayments",
   "project": "BTCPayServer.Plugins.EthereumPayments.csproj",
   "version": "1.0.0",
   "author": "Berggold digital",
