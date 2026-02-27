@@ -1,27 +1,56 @@
 <Project Sdk="Microsoft.NET.Sdk.Razor">
-    <PropertyGroup>
-        <TargetFramework>net8.0</TargetFramework>
-        <ImplicitUsings>enable</ImplicitUsings>
-        <Nullable>enable</Nullable>
-        <AddRazorSupportForMvc>true</AddRazorSupportForMvc>
-        <GenerateEmbeddedFilesManifest>true</GenerateEmbeddedFilesManifest>
-    </PropertyGroup>
+  
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
 
-    <ItemGroup>
-        <ProjectReference Include="..\btcpayserver\BTCPayServer\BTCPayServer.csproj" />
-        <ProjectReference Include="..\btcpayserver\BTCPayServer.Abstractions\BTCPayServer.Abstractions.csproj" />
-        <ProjectReference Include="..\btcpayserver\BTCPayServer.Data\BTCPayServer.Data.csproj" />
-    </ItemGroup>
+  <!-- Plugin Informationen -->
+  <PropertyGroup>
+    <Product>Ethereum Payment Plugin</Product>
+    <Description>Accept Ethereum and ERC-20 tokens (dEURO, USDT) in BTCPayServer</Description>
+    <Version>1.0.0</Version>
+    <Authors>BergDigi</Authors>
+    <PackageTags>btcpayserver;plugin;ethereum;evm;deuro;usdt</PackageTags>
+  </PropertyGroup>
 
-    <ItemGroup>
-        <PackageReference Include="Nethereum.Web3" Version="4.19.0" />
-        <PackageReference Include="Nethereum.Contracts" Version="4.19.0" />
-        <PackageReference Include="Nethereum.RPC" Version="4.19.0" />
-        <PackageReference Include="Nethereum.Util" Version="4.19.0" />
-        <PackageReference Include="Nethereum.Hex" Version="4.19.0" />
-    </ItemGroup>
+  <!-- Plugin Development Properties -->
+  <PropertyGroup>
+    <AddRazorSupportForMvc>true</AddRazorSupportForMvc>
+    <PreserveCompilationContext>false</PreserveCompilationContext>
+    <GenerateEmbeddedFilesManifest>true</GenerateEmbeddedFilesManifest>
+  </PropertyGroup>
 
-    <ItemGroup>
-        <EmbeddedResource Include="Views\**\*.cshtml" />
-    </ItemGroup>
+  <!-- KRITISCH: Diese Konfiguration verhindert Konflikte beim Build -->
+  <ItemDefinitionGroup>
+    <ProjectReference>
+      <Properties>StaticWebAssetsEnabled=false</Properties>
+      <Private>false</Private>
+      <ExcludeAssets>runtime;native;build;buildTransitive;contentFiles</ExcludeAssets>
+    </ProjectReference>
+  </ItemDefinitionGroup>
+
+  <!-- BTCPayServer Referenz als Submodule -->
+  <ItemGroup>
+    <ProjectReference Include="..\btcpayserver\BTCPayServer\BTCPayServer.csproj" />
+  </ItemGroup>
+
+  <!-- Embedded Resources -->
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\**" />
+  </ItemGroup>
+
+  <!-- NuGet Pakete für Ethereum -->
+  <ItemGroup>
+    <PackageReference Include="Nethereum.Web3" Version="4.19.0" />
+    <PackageReference Include="Nethereum.Contracts" Version="4.19.0" />
+    <PackageReference Include="Nethereum.Util" Version="4.19.0" />
+    <PackageReference Include="Nethereum.RPC" Version="4.19.0" />
+    <PackageReference Include="Nethereum.JsonRpc.Client" Version="4.19.0" />
+    
+    <!-- Für File Scoped Types -->
+    <PackageReference Include="Microsoft.Extensions.FileProviders.Embedded" Version="8.0.0" />
+  </ItemGroup>
+
 </Project>
