@@ -1,36 +1,37 @@
 using BTCPayServer.Abstractions.Contracts;
 using BTCPayServer.Abstractions.Models;
 using BTCPayServer.Abstractions.Services;
-using BTCPayServer.Plugins.EthereumPayments.PaymentMethods;
-using BTCPayServer.Plugins.EthereumPayments.Services;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace BTCPayServer.Plugins.EthereumPayments;
 
-public class Plugin : BaseBTCPayServerPlugin
+public class EthereumPaymentsPlugin : BaseBTCPayServerPlugin
 {
     public override string Identifier => "BTCPayServer.Plugins.EthereumPayments";
+    
     public override string Name => "Ethereum Payments";
-    public override string Description => "Accept ETH and ERC-20 tokens (USDT, dEURO) on Ethereum Mainnet";
-    public override Version Version => new Version(1, 0, 0);
+    
+    public override string Description => "Accept Ethereum and ERC-20 tokens (dEURO, USDT) as payment methods";
+    
+    public override string SystemName => "ethereum-payments";
 
     public override void Execute(IServiceCollection services)
     {
-        // Register Services
-        services.AddSingleton<EthereumRpcService>();
-        services.AddSingleton<EthereumPaymentScanner>();
-        services.AddHostedService<EthereumTransactionWatcher>();
-
-        // Register Payment Method Handlers
-        services.AddSingleton<IPaymentMethodHandler, EthereumPaymentMethodHandler>();
-        services.AddSingleton<IPaymentMethodHandler, Erc20PaymentMethodHandler>();
-
-        // Register UI Controllers
-        services.AddSingleton<IUIExtension>(new UIExtension(
-            "EthereumPayments/UIEthereumSettings",
-            "store-integrations-nav"
-        ));
-
-        base.Execute(services);
+        // Ethereum Service Registrierung
+        services.AddSingleton<Services.IEthereumService, Services.EthereumService>();
+        services.AddSingleton<Services.IEthereumWalletService, Services.EthereumWalletService>();
+        
+        // Payment Handler Registrierung
+        services.AddSingleton<Handlers.EthereumPaymentMethodHandler>();
+        services.AddSingleton<Handlers.dEUROPaymentMethodHandler>();
+        services.AddSingleton<Handlers.USDTPaymentMethodHandler>();
+        
+        // Hosted Service für Blockchain Monitoring
+        services.AddHostedService<Services.EthereumBlockchainMonitor>();
+        
+        // MVC Services
+        services.AddMvc()
+            .AddApplicationPart(typeof(EthereumPaymentsPlugin).Assembly)
+            .AddControllersAsServices();
     }
 }
