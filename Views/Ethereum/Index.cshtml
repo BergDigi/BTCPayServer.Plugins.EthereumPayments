@@ -1,0 +1,22 @@
+@{
+    ViewData["Title"] = "Ethereum Payments";
+}
+
+<h2>Ethereum Payment Plugin</h2>
+<p>Plugin is active and monitoring the Ethereum blockchain.</p>
+
+<div id="status">
+    <p>Loading status...</p>
+</div>
+
+@section Scripts {
+    <script>
+        fetch('/plugins/ethereum/status')
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('status').innerHTML = 
+                    `<p>Status: ${data.status}</p>
+                     <p>Current Block: ${data.blockNumber}</p>`;
+            });
+    </script>
+}
